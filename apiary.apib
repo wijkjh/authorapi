@@ -1,0 +1,124 @@
+FORMAT: 1A
+HOST: http://api.qss.nl
+
+# Author API
+The Author API allows you to view and edit the list van authors.
+
+# Group Authors
+Access to the author resources
+
+## Author list [/authors{?start,size,sort}]
+### List all authors [GET]
+List of all available authors.
+
+This call will return a 200 (OK) with a paged list of authors.
+By default the page`size` is set to 10 and `start` page is set to 1.
+The value for `sort` will determine the order in which the list of authors is returned.
+
++ Parameters
+    + start (number, optional) - start at nth member (by order of the parameter sort)
+        + Default: 1
+    
+    + size (number, optional) - retrieve maximum number of results
+        + Default: 10
+    
+    + sort (enum[string], optional) - sort by
+        + Default: `id`
+
+        + Members
+            + `id`
+            + `lastname`
+            + `firstname`
+
++ Request
+    
+    + Header
+    
+            Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+            x-api-version: 1.0
+    
++ Response 200 (application/json)
+
+    + Header
+    
+            ETag: "eeeee"
+            cache-control: max-age=600
+            
+    + Body
+    
+            {  
+                "page": 
+                    {
+                        "number": 1,
+                        "size": 10,
+                        "totalSize": 55
+                    },
+                "authors": [
+                    {
+                        "url" : "/author/1",
+                        "lastName" : "Brown",
+                        "firstName" : "Dan"
+                    },
+                    {
+                        "url" : "/author/2",
+                        "lastName" : "Godard",
+                        "firstName" : "Robert"
+                    },
+                    {
+                        "url" : "/author/3",
+                        "lastName" : "Reve",
+                        "firstName" : "Gerard",
+                        "middleName" : "van 't"
+                    }
+                ]
+            }
+        
+## Author [/author/{id}]
+### Get author by id [GET]
+
+Retrieve a specific author by id.
+
++ Parameters
+    + id (number) - ID of the author
+    
++ Response 200 (application/json)
+
+        {
+            "author" : 
+                {
+                    "url" : "/author/1",
+                    "lastName" : "Brown",
+                    "firstName" : "Dan"
+                }
+        }
+
+
+### Add a new author [POST]
+
+Add a new author.
+
++ Request (application/json)
+
+        {
+            "lastName": "Hoeven",
+            "firstName": "Daan",
+            "middleName": "van der"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /author/100
+
+    + Body
+
+            {
+                "author" : 
+                    {
+                        "url" : "/author/100",
+                        "lastName" : "Hoeven",
+                        "firstName" : "Daan",
+                        "middleName" : "van der"
+                    }
+            }
